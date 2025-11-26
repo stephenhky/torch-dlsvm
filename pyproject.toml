@@ -38,7 +38,7 @@ zip-safe = false
 package-dir = {"" = "src"}
 
 [project.optional-dependencies]
-test = ["pytest"]
+test = ["pytest", "scikit-learn"]
 
 [project.scripts]
 #convert_dataframe_text_sentencetransformer_faissvecdb = "mmknntextfinder.cli:convert_dataframe_text_sentencetransformer_faissvecdb_main"
