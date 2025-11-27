@@ -25,7 +25,7 @@ classifiers = [
     "Intended Audience :: Education"
 ]
 dependencies = [
-    "numpy", "torch", "loguru"
+    "numpy", "torch", "loguru", "orjson"
 ]
 
 [project.urls]
