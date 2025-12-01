@@ -45,6 +45,6 @@ def train(
             optimizer.zero_grad()
 
         if (save_chkpt_every_turn is not None) and (i % save_chkpt_every_turn == 0):
-            torch.save(model.state_dict(), Path(chkpt_folder) / "chpt_{i}.bin")
+            torch.save(model.state_dict(), Path(chkpt_folder) / f"chpt_{i}.bin")
 
     return model
