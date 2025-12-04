@@ -12,4 +12,4 @@ class SVM(torch.nn.Module):
         self.b = torch.nn.Parameter(torch.rand(1), requires_grad=True)
 
     def forward(self, x: torch.Tensor):
-        return torch.dot(x, self.w.T) - self.b
+        return torch.matmul(x, self.w.T) - self.b
