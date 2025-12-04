@@ -5,10 +5,8 @@ import torch.nn as nn
 
 class HingeLoss(nn.Module):
     def _element_wise_loss(self, outputs: torch.Tensor, targets: torch.IntTensor):
-        assert outputs.dim() == 1
-        assert targets.dim() == 1
         assert outputs.shape == targets.shape
-        return torch.maximum(torch.zeros(targets.shape[0]), 1 - outputs * targets)
+        return torch.maximum(torch.zeros(targets.shape), 1 - outputs * targets)
 
     def forward(self, outputs: torch.Tensor, targets: torch.IntTensor):
         return torch.sum(self._element_wise_loss(outputs, targets))
