@@ -39,7 +39,7 @@ def train(
     for i in tqdm(range(nb_epochs)):
         for x, y in dataloader:
             x, y = x.to(device), y.to(device)
-            pred_y = model(x).flatten()
+            pred_y = model(x).flatten().to(device)
             loss = criterion(model.w, pred_y, y)
             loss.backward()
             optimizer.step()
