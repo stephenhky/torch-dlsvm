@@ -7,8 +7,8 @@ import torch
 class SVM(torch.nn.Module):
     def __init__(self, nbfeatures: int):
         self.nbfeatures = nbfeatures
-        self.w = torch.autograd.Variable(torch.rand(self.nbfeatures), requires_grad=True)
-        self.b = torch.autograd.Variable(torch.rand(1), requires_grad=True)
+        self.w = torch.nn.Parameter(torch.rand(self.nbfeatures), requires_grad=True)
+        self.b = torch.nn.Parameter(torch.rand(1), requires_grad=True)
 
     def forward(self, x: torch.Tensor):
         return torch.dot(self.w, x) - self.b
