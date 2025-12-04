@@ -5,6 +5,7 @@ from typing import Optional
 
 import torch
 from torch.utils.data import Dataset, DataLoader
+from tqdm import tqdm
 
 from .model.svm import SVM
 from .model.loss import SVMHingeLoss
@@ -35,7 +36,7 @@ def train(
     criterion = SVMHingeLoss(c)
     dataloader = DataLoader(dataset, batch_size=batchsize, shuffle=shuffle)
 
-    for i in range(nb_epochs):
+    for i in tqdm(range(nb_epochs)):
         for x, y in dataloader:
             x, y = x.to(device), y.to(device)
             pred_y = model(x).flatten()

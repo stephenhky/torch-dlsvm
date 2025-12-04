@@ -16,3 +16,6 @@ class SVM(torch.nn.Module):
             return torch.dot(x, self.w) - self.b
         else:
             return torch.matmul(x.view(x.shape[0], -1), self.w.view(-1, 1)) - self.b
+
+    def __repr__(self):
+        return f"SVM nbfeatures: {self.nbfeatures}"
