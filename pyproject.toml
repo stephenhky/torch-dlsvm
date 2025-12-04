@@ -33,7 +33,7 @@ Repository = "https://github.com/stephenhky/torch-dlsvm"
 Issues = "https://github.com/stephenhky/torch-dlsvm/issues"
 
 [tool.setuptools]
-packages = ["ptdlsvm"]
+packages = ["ptdlsvm", "ptdlsvm.feature", "ptdlsvm.model"]
 zip-safe = false
 package-dir = {"" = "src"}
 
