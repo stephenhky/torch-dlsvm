@@ -62,3 +62,19 @@ def test_training() -> None:
         "model1_label": pred_y_1.detach().cpu(),
         "model2_label": pred_y_2.detach().cpu()
     })
+
+    nbdata = len(result_df)
+    for i in range(3):
+        tp = np.sum(np.array(result_df['ref_label']==i) & np.array(result_df['model0_label']>0))
+        fp = np.sum(np.array(result_df['ref_label']!=i) & np.array(result_df['model0_label']>0))
+        tn = np.sum(np.array(result_df['ref_label']!=i) & np.array(result_df['model0_label']<0))
+        fn = np.sum(np.array(result_df['ref_label']==i) & np.array(result_df['model0_label']<0))
+        recall = tp / (tp+fn)
+        precision = tp / (tp+fp)
+        f1score = 2*recall*precision/(recall+precision)
+        accuracy = (tp + tn) / nbdata
+        print(f"Model {i}")
+        print(f" recall: {recall*100:.2f}%")
+        print(f" precision: {precision*100:.2f}%")
+        print(f" F1-score: {f1score*100:.2f}%")
+        print(f" accuracy: {accuracy*100:.2f}%")
