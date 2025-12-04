@@ -5,8 +5,10 @@ import numpy as np
 import numpy.typing as npt
 import torch
 from torch.utils.data import Dataset
-
 from sklearn.datasets import load_iris
+import polars as pl
+
+from ptdlsvm.train import train
 
 
 class IrisDataset(Dataset):
@@ -35,3 +37,28 @@ class BinaryIrisDataset(IrisDataset):
         #     return x, -1
 
         # return x, torch.where(torch.IntTensor(iris_target).eq(self._ref_target), 1, -1)
+
+
+def test_training() -> None:
+    iris_ds = IrisDataset()
+
+    bin0_iris_ds = BinaryIrisDataset(0)
+    bin1_iris_ds = BinaryIrisDataset(1)
+    bin2_iris_ds = BinaryIrisDataset(2)
+
+    device = torch.device("cpu")
+
+    model0 = train(bin0_iris_ds, 4, 100, 5, c=10.0, device=device)
+    model1 = train(bin1_iris_ds, 4, 100, 5, c=10.0, device=device)
+    model2 = train(bin2_iris_ds, 4, 100, 5, c=10.0, device=device)
+
+    pred_y_0 = model0(iris_ds[:][0].to(device)).flatten()
+    pred_y_1 = model1(iris_ds[:][0].to(device)).flatten()
+    pred_y_2 = model2(iris_ds[:][0].to(device)).flatten()
+
+    result_df = pl.DataFrame({
+        "ref_label": iris_ds[:][1],
+        "model0_label": pred_y_0.detach().cpu(),
+        "model1_label": pred_y_1.detach().cpu(),
+        "model2_label": pred_y_2.detach().cpu()
+    })
