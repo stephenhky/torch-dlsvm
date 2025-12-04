@@ -38,7 +38,7 @@ def train(
     for i in range(nb_epochs):
         for x, y in dataloader:
             x, y = x.to(device), y.to(device)
-            pred_y = model(x)
+            pred_y = model(x).flatten()
             loss = criterion(model.w, pred_y, y)
             loss.backward()
             optimizer.step()
