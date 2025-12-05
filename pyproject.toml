@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ptdlsvm"
+version = "0.0.1"
+authors = [
+    {name = "Kwan Yuet Stephen Ho", email = "stephenhky@yahoo.com.hk"}
+]
+description = "Support Vector Machine (SVM) using PyTorch"
+readme = {file = "README.md", content-type = "text/markdown"}
+license = {text = "MIT"}
+keywords = ["SVM", "support vector machine", "torch"]
+requires-python = ">=3.11"
+classifiers = [
+    "Topic :: Scientific/Engineering :: Mathematics",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education"
+]
+dependencies = [
+    "numpy", "torch", "loguru", "orjson", "tqdm"
+]
+
+[project.urls]
+Repository = "https://github.com/stephenhky/torch-dlsvm"
+Issues = "https://github.com/stephenhky/torch-dlsvm/issues"
+
+[tool.setuptools]
+packages = ["ptdlsvm", "ptdlsvm.feature", "ptdlsvm.model"]
+zip-safe = false
+package-dir = {"" = "src"}
+
+[project.optional-dependencies]
+test = ["pytest", "scikit-learn", "polars"]
+
+[project.scripts]
+#convert_dataframe_text_sentencetransformer_faissvecdb = "mmknntextfinder.cli:convert_dataframe_text_sentencetransformer_faissvecdb_main"
+#convert_dataframe_text_bow_faissvecdb = "mmknntextfinder.cli:convert_dataframe_text_bow_faissvecdb_main"

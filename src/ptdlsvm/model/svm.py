@@ -1,0 +1,21 @@
+
+# Reference: https://bytepawn.com/svm-with-pytorch.html
+
+import torch
+
+
+class SVM(torch.nn.Module):
+    def __init__(self, nbfeatures: int):
+        super().__init__()
+        self.nbfeatures = nbfeatures
+        self.w = torch.nn.Parameter(torch.rand(self.nbfeatures), requires_grad=True)
+        self.b = torch.nn.Parameter(torch.rand(1), requires_grad=True)
+
+    def forward(self, x: torch.Tensor):
+        if x.dim() == 1:
+            return torch.dot(x, self.w) - self.b
+        else:
+            return torch.matmul(x.view(x.shape[0], -1), self.w.view(-1, 1)) - self.b
+
+    def __repr__(self):
+        return f"SVM nbfeatures: {self.nbfeatures}"
