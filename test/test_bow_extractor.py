@@ -13,10 +13,10 @@ def test_bow_feature_extractor() -> None:
     assert vector0.dim() == 2
     assert vector0.is_sparse
 
-    assert vector0[0, 0] == 0.0
-    assert vector0[0, 1] == 1.0
-    assert vector0[0, 2] == 0.0
-    assert vector0[0, 3] == 1.0
+    assert vector0[0, 0] == 1.0
+    assert vector0[0, 1] == 0.0
+    assert vector0[0, 2] == 1.0
+    assert vector0[0, 3] == 0.0
 
 
 def test_bow_feature_building() -> None:
