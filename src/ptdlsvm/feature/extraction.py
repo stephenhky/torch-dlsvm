@@ -11,7 +11,7 @@ from .utils import FeatureExtractor
 
 
 class BOWFeatureExtractor(FeatureExtractor):
-    def _init__(self, initial_features: Optional[dict[str, int]] = None):
+    def __init__(self, initial_features: Optional[dict[str, int]] = None):
         if initial_features is None:
             self._features = {}
         else:

@@ -1,12 +1,11 @@
 
-from typing import Union
-
 import numpy as np
 import numpy.typing as npt
 import torch
 from torch.utils.data import Dataset
 from sklearn.datasets import load_iris
 import polars as pl
+from loguru import logger
 
 from ptdlsvm.train import train
 
@@ -18,7 +17,7 @@ class IrisDataset(Dataset):
     def __len__(self) -> int:
         return len(self._iris['target'])
 
-    def __getitem__(self, idx: int) -> tuple[torch.Tensor, Union[int, npt.NDArray[np.int64]]]:
+    def __getitem__(self, idx: int) -> tuple[torch.Tensor, int | npt.NDArray[np.int64]]:
         return torch.Tensor(self._iris['data'][idx, :]), self._iris['target'][idx]
 
 
@@ -27,7 +26,7 @@ class BinaryIrisDataset(IrisDataset):
         super().__init__()
         self._ref_target = ref_target
 
-    def __getitem__(self, idx: int) -> tuple[torch.Tensor, Union[int, npt.NDArray[np.int64]]]:
+    def __getitem__(self, idx: int) -> tuple[torch.Tensor, int | npt.NDArray[np.int64]]:
         x, iris_target = super().__getitem__(idx)
         return x, np.where(iris_target == self._ref_target, 1, -1)
 
@@ -65,16 +64,16 @@ def test_training() -> None:
 
     nbdata = len(result_df)
     for i in range(3):
-        tp = np.sum(np.array(result_df['ref_label']==i) & np.array(result_df['model0_label']>0))
-        fp = np.sum(np.array(result_df['ref_label']!=i) & np.array(result_df['model0_label']>0))
-        tn = np.sum(np.array(result_df['ref_label']!=i) & np.array(result_df['model0_label']<0))
-        fn = np.sum(np.array(result_df['ref_label']==i) & np.array(result_df['model0_label']<0))
+        tp = np.sum(np.array(result_df['ref_label']==i) & np.array(result_df[f'model{i}_label']>0))
+        fp = np.sum(np.array(result_df['ref_label']!=i) & np.array(result_df[f'model{i}_label']>0))
+        tn = np.sum(np.array(result_df['ref_label']!=i) & np.array(result_df[f'model{i}_label']<0))
+        fn = np.sum(np.array(result_df['ref_label']==i) & np.array(result_df[f'model{i}_label']<0))
         recall = tp / (tp+fn)
         precision = tp / (tp+fp)
         f1score = 2*recall*precision/(recall+precision)
         accuracy = (tp + tn) / nbdata
-        print(f"Model {i}")
-        print(f" recall: {recall*100:.2f}%")
-        print(f" precision: {precision*100:.2f}%")
-        print(f" F1-score: {f1score*100:.2f}%")
-        print(f" accuracy: {accuracy*100:.2f}%")
+        logger.info(f"Model {i}")
+        logger.info(f" recall: {recall*100:.2f}%")
+        logger.info(f" precision: {precision*100:.2f}%")
+        logger.info(f" F1-score: {f1score*100:.2f}%")
+        logger.info(f" accuracy: {accuracy*100:.2f}%")
