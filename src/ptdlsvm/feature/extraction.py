@@ -63,7 +63,13 @@ class BOWFeatureExtractor(FeatureExtractor):
         return self._features[feature]
 
     def save(self, outputpath: Union[str, PathLike]) -> None:
-        open(outputpath, "wb").write(orjson.dumps(self._features))
+        with open(outputpath, "wb") as f:
+            f.write(
+                orjson.dumps(
+                    self._features,
+                    option=orjson.OPT_INDENT_2
+                )
+            )
 
     @classmethod
     def from_pretrained(cls, path: str | PathLike) -> Self:
