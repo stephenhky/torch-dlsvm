@@ -1,5 +1,5 @@
 
-from typing import Optional, Self
+from typing import Optional, Self, Union
 import warnings
 from os import PathLike
 from collections import defaultdict
@@ -33,6 +33,20 @@ class BOWFeatureExtractor(FeatureExtractor):
             if feature in self._features:
                 feature_pos_count[self._features[feature]] += 1
 
+        return torch.sparse_coo_tensor(
+            torch.stack((
+                torch.zeros(len(feature_pos_count), dtype=torch.int64),
+                torch.IntTensor(list(feature_pos_count.keys()))
+            ), dim=0),
+            torch.FloatTensor(list(feature_pos_count.values())),
+            (1, len(self._features))
+        )
+
+    def transform_from_counts(self, feature_counts: dict[str, Union[int, float]]) -> torch.Tensor:
+        feature_pos_count = {
+            self._features[feature]: count
+            for feature, count in feature_counts.items()
+        }
         return torch.sparse_coo_tensor(
             torch.stack((
                 torch.zeros(len(feature_pos_count), dtype=torch.int64),
