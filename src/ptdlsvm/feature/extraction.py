@@ -59,6 +59,9 @@ class BOWFeatureExtractor(FeatureExtractor):
     def __len__(self) -> int:
         return len(self._features)
 
+    def get_feature_idx(self, feature: str) -> int:
+        return self._features[feature]
+
     @classmethod
     def from_pretrained(cls, path: str | PathLike) -> Self:
         features = orjson.loads(
