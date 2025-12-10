@@ -60,8 +60,11 @@ class BOWFeatureExtractor(FeatureExtractor):
     def __len__(self) -> int:
         return len(self._features)
 
-    def get_feature_idx(self, feature: str) -> int:
-        return self._features[feature]
+    def get_feature_idx(self, feature: str) -> Optional[int]:
+        return self._features.get(feature)
+
+    def feature_exists(self, feature: str) -> bool:
+        return feature in self._features.keys()
 
     def save(self, outputpath: Union[str, PathLike]) -> None:
         with open(outputpath, "wb") as f:
