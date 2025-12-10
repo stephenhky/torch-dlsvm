@@ -46,6 +46,7 @@ class BOWFeatureExtractor(FeatureExtractor):
         feature_pos_count = {
             self._features[feature]: count
             for feature, count in feature_counts.items()
+            if feature in self._features
         }
         return torch.sparse_coo_tensor(
             torch.stack((
