@@ -1,7 +1,7 @@
 
 from os import PathLike
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Callable
 
 import torch
 from torch.utils.data import Dataset, DataLoader
@@ -23,7 +23,8 @@ def train(
         save_chkpt_every_turn: Optional[int] = None,
         shuffle: bool = True,
         chkpt_to_start_training: Optional[str | PathLike] = None,
-        optimizer: Optional[torch.optim.Optimizer] = None
+        optimizer: Optional[torch.optim.Optimizer] = None,
+        collate_fn: Optional[Callable] = None
 ) -> SVM:
     model = SVM(feature_vec_dim)
     if chkpt_to_start_training is not None:
@@ -34,7 +35,9 @@ def train(
         optimizer = torch.optim.Adam(model.parameters(), lr=lr)
     model.to(device)
     criterion = SVMHingeLoss(c)
-    dataloader = DataLoader(dataset, batch_size=batchsize, shuffle=shuffle)
+    dataloader = DataLoader(
+        dataset, batch_size=batchsize, shuffle=shuffle, collate_fn=collate_fn
+    )
 
     for i in tqdm(range(nb_epochs)):
         for x, y in dataloader:
