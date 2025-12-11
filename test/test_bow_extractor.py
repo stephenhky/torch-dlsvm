@@ -35,3 +35,34 @@ def test_bow_feature_building() -> None:
     assert vector0[0, 1] == 1.0
     assert vector0[0, 2] == 1.0
     assert vector0[0, 3] == 0.0
+
+
+def test_bow_feature_extractor_2():
+    features = {"a": 0, "b": 1, "c": 2, "d": 3}
+    bow_feature_extractor = BOWFeatureExtractor(initial_features=features)
+    vector0 = bow_feature_extractor.transform(['c', 'a', 'a', 'b'])
+
+    assert isinstance(vector0, torch.Tensor)
+    assert vector0.dim() == 2
+    assert vector0.is_sparse
+
+    assert vector0[0, 0] == 2.0
+    assert vector0[0, 1] == 1.0
+    assert vector0[0, 2] == 1.0
+    assert vector0[0, 3] == 0.0
+
+
+def test_bow_feature_extractor_3():
+    features = {"a": 0, "b": 1, "c": 2, "d": 3}
+    bow_feature_extractor = BOWFeatureExtractor(initial_features=features)
+    vector0 = bow_feature_extractor.transform_from_counts({'a': 2, 'b': 1, 'c': 1})
+
+    assert isinstance(vector0, torch.Tensor)
+    assert vector0.dim() == 2
+    assert vector0.is_sparse
+
+    assert vector0[0, 0] == 2.0
+    assert vector0[0, 1] == 1.0
+    assert vector0[0, 2] == 1.0
+    assert vector0[0, 3] == 0.0
+
