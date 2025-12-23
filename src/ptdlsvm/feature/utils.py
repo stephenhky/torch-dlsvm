@@ -1,11 +1,11 @@
 
-from abc import abstractmethod
+from abc import abstractmethod, ABC
 from typing import Any, Union
 
 import torch
 
 
-class FeatureExtractor:
+class FeatureExtractor(ABC):
     @abstractmethod
     def transform(self, X: Any) -> torch.Tensor:
         raise NotImplementedError()
